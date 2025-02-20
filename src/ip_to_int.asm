@@ -14,8 +14,8 @@ ip_to_int:
 
 .loop:
     mov al, byte [r12+rcx]
-    cmp al, 0
-    je .exit_loop
+    test al, al
+    jz .exit_loop
 
     cmp al, '.'
     je .transfer_octet
@@ -32,20 +32,23 @@ ip_to_int:
     mov [octets+rbx], dl  ; Move current octet's sum into it's place in the array
     inc rbx               ; octet_index++
     xor rdx, rdx          ; current_octet sum reset for next octet
-    inc rcx
+    inc rcx               ; Skip the dot
     jmp .loop
 
 
 .exit_loop:
     mov [octets+rbx], dl
-    xor eax, eax
-    mov al, byte [octets+3]
+
+    movzx eax, byte [octets+0]
     shl eax, 8
-    mov al, byte [octets+2]
+    movzx edx, byte [octets+1]
+    or eax, edx
     shl eax, 8
-    mov al, byte [octets+1]
+    movzx edx, byte [octets+2]
+    or eax, edx
     shl eax, 8
-    mov al, byte [octets]
+    movzx edx, byte [octets+3]
+    or eax, edx
 
     ret
 

