@@ -1,7 +1,6 @@
-default rel
 global _start
 
-%include "./src/ip_to_bin.asm"
+%include "./src/ip_to_int.asm"
 
 %define AF_INET 2
 %define EXIT 60

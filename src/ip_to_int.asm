@@ -3,10 +3,10 @@
 ; i: Offset in string
 ; r12 will hold the string address
 
-global ip_to_bin
+global ip_to_int
 
 section .text
-ip_to_bin:
+ip_to_int:
     lea r12, [rdi] ; String with IP address
     xor rcx, rcx   ; i
     xor rbx, rbx   ; octet_index
