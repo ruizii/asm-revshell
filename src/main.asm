@@ -22,6 +22,8 @@ _start:
     xor rdx, rdx
     mov rax, SOCKET
     syscall
+    cmp rax, -1
+    jle error
     mov dword [s], eax
 
     mov word  [rsp],   AF_INET
@@ -42,6 +44,8 @@ _start:
     mov rdx, 16
     mov rax, CONNECT
     syscall
+    cmp rax, -1
+    jle error
 
     mov edi, [s]
     mov rsi, 0
@@ -66,6 +70,11 @@ _start:
 
     leave
     xor rdi, rdi
+    mov rax, EXIT
+    syscall
+
+error:
+    mov rdi, 1
     mov rax, EXIT
     syscall
 
