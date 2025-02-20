@@ -4,4 +4,4 @@ all:
 	ld ./src/main.o -o ./build/revshell
 
 clean:
-	rm -f ./src/main.o ./build/revshell
+	rm -f ./src/*.o ./build/*
