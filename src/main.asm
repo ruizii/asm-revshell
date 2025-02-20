@@ -34,7 +34,6 @@ _start:
 
     lea rdi, [IP_ADDR]
     call ip_to_int ; IP in eax
-    bswap eax
     mov dword [rsp+4], eax
 
     mov qword [rsp+8], 0 ; padding

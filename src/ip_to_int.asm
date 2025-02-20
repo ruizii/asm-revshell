@@ -50,6 +50,8 @@ ip_to_int:
     movzx edx, byte [octets+3]
     or eax, edx
 
+    bswap eax ; Network byte order
+
     ret
 
 section .bss
