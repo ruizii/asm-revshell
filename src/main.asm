@@ -15,6 +15,7 @@ section .text
 _start:
     push rbp
     mov rbp, rsp
+
     sub rsp, 16
 
     mov rdi, AF_INET
@@ -26,7 +27,7 @@ _start:
     jle error
     mov dword [s], eax
 
-    mov word  [rsp],   AF_INET
+    mov word [rsp], AF_INET
 
     mov bx, PORT
     xchg bh, bl ; PORT in bx
